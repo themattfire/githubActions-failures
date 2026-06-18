@@ -1,0 +1,28 @@
+# Author: RZFeeser
+# githubActions-failures/.github/workflows/notify_on_failure.yml
+
+name: send notification on failure
+
+on:
+  workflow_dispatch:
+
+jobs:
+  # this job will always run first
+  build-and-fail:   # this is the intended work to do
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Simulate some kind of workflow / pipeline failure
+        run: |
+          # Simulate a test failure
+          exit 1
+
+  notify-on-failure:   # replace these steps with notification integrations
+    runs-on: ubuntu-latest
+    needs: build-and-fail       # This job depends on 'build-and-test'
+    if: failure()               # This job only runs if 'build-and-fail' fails
+    steps:
+      - name: Replace this step with a teams, slack, sms, marketplace integration or curl
+        run: echo wow it failed
